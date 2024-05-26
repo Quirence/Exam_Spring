@@ -4,14 +4,14 @@
 
 class DivHash {
  public:
-  long long operator()(long long key, long long size) {
+  int64_t operator()(int64_t key, int64_t size) {
     return key % size;
   }
 };
 
 class PolynomialHash {
  public:
-  int64_t operator()(const std::string &str) {
+  int64_t operator()(const std::string& str) {
     const static int64_t p = 1000000007;
     const static int64_t x = 263;
     int64_t sum = 0;
@@ -26,30 +26,30 @@ class PolynomialHash {
 
 class HashTable {
   std::string table[20000];
-  void Insert(std::string name);
-  bool Remove(std::string name);
+  void Insert(std::string& name);
+  bool Remove(std::string& name);
   PolynomialHash hash;
   DivHash stepper;
  public:
-  void Push(std::string name);
-  bool Pop(std::string name);
-  bool Search(std::string name);
+  void Push(std::string& name);
+  bool Pop(std::string& name);
+  bool Search(std::string& name);
 };
 
-void HashTable::Insert(std::string name) {
+void HashTable::Insert(std::string& name) {
   int64_t index = hash(name) % 20000;
   int64_t step = stepper(index, 20000);
-  while (table[index] != "") {
+  while (!table[index].empty()) {
     index += step;
     index = index % 20000;
   }
   table[index] = name;
 }
 
-bool HashTable::Remove(std::string name) {
+bool HashTable::Remove(std::string& name) {
   int64_t index = hash(name) % 20000;
   int64_t step = stepper(index, 20000);
-  if (table[index] == "") {
+  if (table[index].empty()) {
     return false;
   }
   if (table[index] == name) {
@@ -59,7 +59,7 @@ bool HashTable::Remove(std::string name) {
   while (table[index] != name) {
     index += step;
     index = index % 20000;
-    if (table[index] == "") {
+    if (table[index].empty()) {
       return false;
     }
   }
@@ -67,10 +67,10 @@ bool HashTable::Remove(std::string name) {
   return true;
 }
 
-bool HashTable::Search(std::string name) {
+bool HashTable::Search(std::string& name) {
   int64_t index = hash(name) % 20000;
   int64_t step = stepper(index, 20000);
-  if (table[index] == "") {
+  if (table[index].empty()) {
     return false;
   }
   if (table[index] == name) {
@@ -79,18 +79,18 @@ bool HashTable::Search(std::string name) {
   while (table[index] != name) {
     index += step;
     index = index % 20000;
-    if (table[index] == "") {
+    if (table[index].empty()) {
       return false;
     }
   }
   return true;
 }
 
-void HashTable::Push(std::string name) {
+void HashTable::Push(std::string& name) {
   Insert(name);
 }
 
-bool HashTable::Pop(std::string name) {
+bool HashTable::Pop(std::string& name) {
   return Remove(name);
 }
 
