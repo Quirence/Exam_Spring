@@ -24,4 +24,4 @@ std::vector<int> FordBellman(std::vector<Edge> edges, int start, int size) {
   return dist;
 }
 
-// Асимптотика - V * E
+// Асимптотика - O(V * E)
